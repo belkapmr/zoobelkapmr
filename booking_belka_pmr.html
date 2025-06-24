@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Бронирование — Белка ПМР</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Белка ПМР</h1>
+      <p>Контактный зоопарк в Тирасполе</p>
+    </div>
+  </header>
+
+  <section id="booking">
+    <div class="container">
+      <h2>Бронирование билетов</h2>
+      <form id="bookingForm">
+        <input type="text" name="name" placeholder="Ваше имя" required>
+        <input type="tel" name="phone" placeholder="Номер телефона" required>
+        <input type="number" name="adults" placeholder="Количество взрослых" min="0" required>
+        <input type="number" name="children" placeholder="Количество детей" min="0" required>
+        <input type="date" name="date" required>
+        <input type="time" name="time" required>
+        <select name="ticket_type" required>
+          <option value="">Выберите тип билета</option>
+          <option value="Обычный">Обычный</option>
+          <option value="С кормом">С кормом</option>
+          <option value="Групповой">Групповой</option>
+        </select>
+        <textarea name="comments" placeholder="Дополнительные пожелания"></textarea>
+        <button type="submit">Забронировать</button>
+      </form>
+      <p id="bookingResult"></p>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        name: form.name.value,
+        phone: form.phone.value,
+        adults: form.adults.value,
+        children: form.children.value,
+        date: form.date.value,
+        time: form.time.value,
+        ticket_type: form.ticket_type.value,
+        comments: form.comments.value
+      };
+
+      const res = await fetch("https://your-server.com/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        document.getElementById('bookingResult').textContent = "✅ Бронирование отправлено!";
+        form.reset();
+      } else {
+        document.getElementById('bookingResult').textContent = "❌ Ошибка при отправке.";
+      }
+    });
+  </script>
+</body>
+</html>
